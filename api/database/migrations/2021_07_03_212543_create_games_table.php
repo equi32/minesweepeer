@@ -22,6 +22,7 @@ class CreateGamesTable extends Migration
             $table->integer('mines')->default(1);
             $table->timestamp('last_update')->nullable();
             $table->text('board');
+            $table->integer('timetracking')->default(0);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

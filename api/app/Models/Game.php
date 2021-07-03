@@ -21,7 +21,8 @@ class Game extends Model
         'cols',
         'mines',
         'last_update',
-        'board'
+        'board',
+        'timetracking'
     ];
 
     /**
@@ -29,6 +30,6 @@ class Game extends Model
      */
     public function user()
     {
-        retur $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
