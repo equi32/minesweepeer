@@ -1,38 +1,135 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import Layout from './Layout';
 
+import en from '../lang/en';
+import routes from '../constants/routes';
+import HeaderButton from '../components/Common/HeaderButton';
+
+import { GameContext } from '../contexts/GameContextProvider';
+import { NEW_GAME } from '../types';
+
+const initialGame = {
+    rows: '',
+    cols: '',
+    mines: ''
+}
+
+const maxParams = {
+    rows: 100,
+    cols: 100
+}
+
 const Main = () => {
+    //History
+    const history = useHistory();
+    //Context
+    const { handleGame } = useContext(GameContext);
+    //Local state
+    const [ game, setGame ] = useState(initialGame)
+    //Form changes
+    const handleChange = e => {
+        setGame({
+            ...game,
+            [e.target.name]: e.target.value
+        })
+    }
+    //Form submit
+    const handleSubmit = e => {
+        e.preventDefault();
+        //Validate
+        if(isNaN(parseInt(game.rows)) || game.rows > maxParams.rows){
+            alert('error row');
+            return;
+        }
+        if(isNaN(game.cols) || game.cols > maxParams.cols){
+            alert('error cols');
+            return;
+        }
+        if(isNaN(game.mines) || game.mines > (game.rows * game.cols)){
+            alert('error mines');
+            return;
+        }
+        //Set the data
+        handleGame({
+            type: NEW_GAME,
+            payload: {
+                rows: game.rows,
+                cols: game.cols,
+                mines: game.mines
+            }
+        });
+        //Redirect to game
+        history.push(routes.PLAY);
+    }
     //Render
     return (
         <Layout>
-            <div>
-                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                    Set your game
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                <h2 className="text-center text-3xl font-extrabold text-gray-900">
+                    { en.START_GAME }
                 </h2>
+                </div>
+                <div className="text-right">
+                    <HeaderButton to={ routes.LOGIN } className="">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                    </HeaderButton>
+                </div>
             </div>
-            <form class="mt-8 space-y-6">
-                <div class="rounded-md shadow-sm -space-y-px">
+            <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+                <div className="rounded-md shadow-sm -space-y-px">
                     <div>
-                        <label for="rows-number" class="sr-only">Rows</label>
-                        <input name="rows-number" type="number" autocomplete="off" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Rows" />
+                        <label htmlFor="rows-number" className="sr-only">Rows</label>
+                        <input 
+                            name="rows" 
+                            type="number" 
+                            autoComplete="off" 
+                            required 
+                            className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" 
+                            placeholder={ en.PLACEHOLDER.ROWS }
+                            autoFocus
+                            onChange={handleChange}
+                            value={game.rows}
+                        />
                     </div>
                     <div>
-                        <label for="cols-number" class="sr-only">Columns</label>
-                        <input name="cols-number" type="number" autocomplete="off" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Columns" />
+                        <label htmlFor="cols-number" className="sr-only">Columns</label>
+                        <input 
+                            name="cols" 
+                            type="number" 
+                            autoComplete="off" 
+                            required 
+                            className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" 
+                            placeholder={ en.PLACEHOLDER.COLS } 
+                            onChange={handleChange}
+                            value={game.cols}
+                        />
                     </div>
                     <div>
-                        <label for="mines-number" class="sr-only">Mines</label>
-                        <input name="mines-number" type="number" autocomplete="off" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Mines" />
+                        <label htmlFor="mines-number" className="sr-only">Mines</label>
+                        <input 
+                            name="mines" 
+                            type="number" 
+                            autoComplete="off" 
+                            required 
+                            className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" 
+                            placeholder={ en.PLACEHOLDER.MINES }
+                            onChange={handleChange}
+                            value={game.mines}
+                        />
                     </div>
                 </div>
                 <div>
-                    <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                    <button type="submit" className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
                             </svg>
                         </span>
-                        Start game
+                        { en.START_GAME }
                     </button>
                 </div>
             </form>

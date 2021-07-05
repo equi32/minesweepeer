@@ -3,6 +3,8 @@ import Layout from '../Layout';
 import Cell from './Cell';
 
 import { createBoard } from '../../helpers/functions';
+import HeaderButton from '../../components/Common/HeaderButton';
+import routes from '../../constants/routes';
 
 const initialRows = 5;
 const initialCols = 5;
@@ -14,6 +16,7 @@ const Board = () => {
     const [ totalCols, setTotalCols ] = useState(initialCols);
     const [ totalMines, setTotalMines ] = useState(initialMines);
     const [ board, setBoard ] = useState(null);
+    const [ clock, setClock ] = useState(new Date());
     //Board
     useEffect(() => {
         setBoard(createBoard(totalRows, totalCols, totalMines));
@@ -21,27 +24,39 @@ const Board = () => {
     //Render
     return (
         <Layout>
-            <div className="lg:flex lg:items-center lg:justify-between">
-                <div className="flex-1 min-w-0">
-                    <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
-                        MineSweeper
-                    </h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                <h2 className="text-center text-3xl font-extrabold text-gray-900">
+                    { process.env.REACT_APP_NAME }
+                </h2>
                 </div>
-                <div className="mt-5 flex lg:mt-0 lg:ml-4">
-                    <span className="hidden sm:block">
-                    <button type="button" className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        <svg className="-ml-1 mr-2 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                <div className="text-right">
+                    <HeaderButton to={ routes.HOME } className="">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                         </svg>
-                        Edit
-                    </button>
-                    </span>
+                    </HeaderButton>
+                </div>
+            </div>
+            <div class="grid grid-cols-3 gap-4 mb-2 mt-2">
+                <div>
+                    { clock }
+                </div>
+                <div className="text-center">
+                    MineCounter
+                </div>
+                <div className="text-right">
+                    <HeaderButton to={ routes.LOGIN } className="">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                        </svg>
+                    </HeaderButton>
                 </div>
             </div>
             <div className="grid grid-flow-col grid-cols-5 grid-rows-5">
                 {
                     board ? (
-                        board.board.map(row => (
+                        board.cells.map(row => (
                             row.map(cell => (
                                 <Cell
                                     key={`${cell.x}-${cell.y}`}

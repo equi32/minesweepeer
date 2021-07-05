@@ -46,7 +46,7 @@ export const createBoard = (rows, cols, mines) => {
         cols,
         mines,
         flagsRemain: mines,
-        board
+        cells: board
     };
 }
 
@@ -67,7 +67,7 @@ export const findMines = (cell, board) => {
                 //Check borders
                 if(x < totalRows && x >= 0 && y < totalCols && y >= 0){
                     //Check if has mine
-                    if(board.board[x][y].hasMine){
+                    if(board.cells[x][y].hasMine){
                         minesCount++;
                     }
                 }
@@ -76,5 +76,51 @@ export const findMines = (cell, board) => {
     }
     //Return
     return minesCount;
+}
+
+export const openNeighbours = (cell, board) => {
+    const totalRows = board.rows;
+    const totalCols = board.cols;
+    //Initialize
+    // let minesCount = 0;
+    let newCells = board.cells;
+    let neighbours = [];
+    //Look mines around the cell, first around de rows
+    for(let row = -1; row <= 1; row++){
+        //Around the cols
+        for(let col = -1; col <= 1; col++){
+            //Take the position
+            const x = cell.x + row;
+            const y = cell.y + col;
+            //Skip the cell
+            if(row !== 0 || col !== 0){
+                //Check borders
+                if(x < totalRows && x >= 0 && y < totalCols && y >= 0){
+                    //Check if has Mine/isOpen
+                    if(!newCells[x][y].hasMine && !newCells[x][y].isOpen){
+                        //Open
+                        newCells[x][y].isOpen = true;
+                        //Count mines
+                        const minesCount = findMines(newCells[x][y],board);
+                        newCells[x][y].count = minesCount;
+                        // //Check
+                        if(minesCount === 0){
+                            neighbours.push(newCells[x][y]);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    console.log(neighbours);
+    //Verify the rest
+    neighbours.forEach(v => {
+        newCells = openNeighbours(v, {
+            ...board,
+            cells: newCells
+        })
+    })
+    //Return
+    return newCells;
 }
 
