@@ -54,9 +54,9 @@ const Main = () => {
         handleGame({
             type: NEW_GAME,
             payload: {
-                rows: game.rows,
-                cols: game.cols,
-                mines: game.mines
+                rows: parseInt(game.rows),
+                cols: parseInt(game.cols),
+                mines: parseInt(game.mines)
             }
         });
         //Redirect to game

@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import moment from 'moment';
+
 import Layout from '../Layout';
 import Cell from './Cell';
 
@@ -6,27 +8,33 @@ import { createBoard } from '../../helpers/functions';
 import HeaderButton from '../../components/Common/HeaderButton';
 import routes from '../../constants/routes';
 
-const initialRows = 5;
-const initialCols = 5;
-const initialMines = 5;
+import { GameContext } from '../../contexts/GameContextProvider';
 
 const Board = () => {
+    //Context
+    const { game } = useContext(GameContext);
     //State inicial
-    const [ totalRows, setTotalRows ] = useState(initialRows);
-    const [ totalCols, setTotalCols ] = useState(initialCols);
-    const [ totalMines, setTotalMines ] = useState(initialMines);
     const [ board, setBoard ] = useState(null);
-    const [ clock, setClock ] = useState(new Date());
+    const [ clock, setClock ] = useState(0);
     //Board
     useEffect(() => {
-        setBoard(createBoard(totalRows, totalCols, totalMines));
+        if(game.rows && game.cols && game.mines){
+            setBoard(createBoard(game.rows, game.cols, game.mines));
+        }
     }, []);
+
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         setClock(clock + 1);
+    //     }, 1000);
+    // });
     //Render
     return (
         <Layout>
+            <div className="box-content">
             <div class="grid grid-cols-2 gap-4">
-                <div>
-                <h2 className="text-center text-3xl font-extrabold text-gray-900">
+                <div className="text-left">
+                <h2 className="text-3xl font-extrabold text-gray-900">
                     { process.env.REACT_APP_NAME }
                 </h2>
                 </div>
@@ -38,13 +46,16 @@ const Board = () => {
                     </HeaderButton>
                 </div>
             </div>
-            <div class="grid grid-cols-3 gap-4 mb-2 mt-2">
-                <div>
-                    { clock }
+            <div class="grid grid-cols-2 gap-4 mb-2 mt-2">
+                <div className="text-left">
+                    <div className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        { clock < 10 && clock < 100 ? `00${clock}` : clock < 100 ? `0${clock}` : clock }
+                    </div>
+                    <div className="ml-2 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        { board ? board.flagsRemain : '-' }
+                    </div>
                 </div>
-                <div className="text-center">
-                    MineCounter
-                </div>
+                
                 <div className="text-right">
                     <HeaderButton to={ routes.LOGIN } className="">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -53,21 +64,28 @@ const Board = () => {
                     </HeaderButton>
                 </div>
             </div>
-            <div className="grid grid-flow-col grid-cols-5 grid-rows-5">
-                {
-                    board ? (
-                        board.cells.map(row => (
-                            row.map(cell => (
-                                <Cell
-                                    key={`${cell.x}-${cell.y}`}
-                                    cell={cell}
-                                    board={board}
-                                    setBoard={setBoard}
-                                />
+            {
+                board ? (
+                    <div className={`grid flex justify-center`}>
+                        {
+                            board.cells.map(row => (
+                                <div className="w-100" style={{ height: `calc(100% / ${ board.rows}`}}>
+                                    {
+                                        row.map(cell => (
+                                            <Cell
+                                                key={`${cell.x}-${cell.y}`}
+                                                cell={cell}
+                                                board={board}
+                                                setBoard={setBoard}
+                                            />
+                                        ))
+                                    }
+                                </div>
                             ))
-                        ))
-                    ) : null
-                }
+                        }
+                    </div>
+                ) : null
+            }
             </div>
         </Layout>
     );
