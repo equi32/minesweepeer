@@ -37,7 +37,7 @@ const LoadGame = () => {
                     </div>
                     <div className="text-right">
                         <HeaderButton to={ routes.HOME }>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                             </svg>
                         </HeaderButton>
@@ -46,10 +46,10 @@ const LoadGame = () => {
             </div>
             {
                 game.games && game.games.length > 0 ? (
-                    <div class="flex flex-col">
+                    <div className="flex flex-col">
                         {
                             game.games.map(game => (
-                                <div className="mt-4">
+                                <div className="mt-4" key={`game-${game.id}`}>
                                     <button 
                                         type="button" 
                                         className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -62,7 +62,7 @@ const LoadGame = () => {
                                         <br />
                                         Rows: { game.rows } - Cols: { game.cols } - Mines: { game.mines }
                                         <br />
-                                        Time: { game.timetracking }
+                                        Time: { game.clock }
                                     </button>
                                 </div>
                             ))

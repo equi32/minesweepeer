@@ -16,38 +16,39 @@ import { SET_PROFILE } from '../types';
 import { showErrorMessage, waitingMessage } from '../components/Alert/Alert';
 import Swal from 'sweetalert2';
 
-const Login = () => {
+const Register = () => {
     //History
     const history = useHistory();
     //Context
     const { handleProfile } = useContext(AuthContext)
     //Local state
-    const [ email, setEmail ] = useState('');
-    const [ password, setPassword ] = useState('');
+    const [ userData, setData ] = useState({
+        name: '',
+        email: '',
+        password: '',
+        password_confirmation: ''
+    });
     //Handle changes
-    const handleOnChangeEmail = e => {
-        setEmail(e.target.value);
-    }
-    const handleOnChangePassword = e => {
-        setPassword(e.target.value);
+    const handleOnChange = e => {
+        setData({
+            ...userData,
+            [e.target.name]: e.target.value
+        })
     }
     //Handle the submit
     const handleSubmit = async e => {
         e.preventDefault();
         //Check the data
-        if(email && password){
+        if(userData.name && userData.email && userData.password){
             //Loading
-            waitingMessage(en.LOGGING_IN);
+            waitingMessage(en.REGISTERING);
 
             try{
                 const response = await api
                     .get(process.env.REACT_APP_SANCTUM_URL)
                     .then(response => {
                         return api
-                        .post(apiMethods.LOGIN, {
-                            email,
-                            password
-                        })
+                        .post(apiMethods.REGISTER, userData)
                         .then(response => {
                             return response;
                         });
@@ -95,12 +96,26 @@ const Login = () => {
         <Layout halfWidth>
             <div>
                 <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                    { en.SIGN_IN_TITLE }
+                    { en.REGISTER_TITLE }
                 </h2>
             </div>
-            <form className="mt-8 space-y-6 flex content-center justify-center" onSubmit={handleSubmit}>
+            <form className="mt-8 space-y-6 flex content-center justify-center" onSubmit={handleSubmit} autoComplete="off">
                 <div className="w-1/2">
                     <div className="rounded-md shadow-sm -space-y-px mb-2">
+                        <div>
+                            <label htmlFor="name" className="sr-only">Name</label>
+                            <input 
+                                id="name" 
+                                name="name" 
+                                type="text" 
+                                required 
+                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" 
+                                placeholder="Your name"
+                                autoFocus
+                                value={userData.name}
+                                onChange={handleOnChange}
+                            />
+                        </div>
                         <div>
                             <label htmlFor="email-address" className="sr-only">Email address</label>
                             <input 
@@ -109,11 +124,11 @@ const Login = () => {
                                 type="email" 
                                 autoComplete="email" 
                                 required 
-                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" 
+                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" 
                                 placeholder="Email address"
                                 autoFocus
-                                value={email}
-                                onChange={handleOnChangeEmail}
+                                value={userData.email}
+                                onChange={handleOnChange}
                             />
                         </div>
                         <div>
@@ -122,12 +137,24 @@ const Login = () => {
                                 id="password" 
                                 name="password" 
                                 type="password" 
-                                autoComplete="current-password" 
+                                required 
+                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" 
+                                placeholder="Password" 
+                                value={userData.password}
+                                onChange={handleOnChange}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="password" className="sr-only">Password</label>
+                            <input 
+                                id="password_confirmation" 
+                                name="password_confirmation" 
+                                type="password" 
                                 required 
                                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" 
-                                placeholder="Password" 
-                                value={password}
-                                onChange={handleOnChangePassword}
+                                placeholder="Confirm Password" 
+                                value={userData.password_confirmation}
+                                onChange={handleOnChange}
                             />
                         </div>
                     </div>
@@ -138,11 +165,11 @@ const Login = () => {
                                 <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
                                 </svg>
                             </span>
-                            { en.SIGN_IN }
+                            { en.REGISTER.toUpperCase() }
                         </button>
                         <small className="mt-2">
-                            Not user?,&nbsp;
-                            Please register <Link className="text-blue-800 font-medium" to={ routes.REGISTER }>here</Link>.
+                            Already registered?,&nbsp;
+                            Go to login <Link className="text-blue-800 font-medium" to={ routes.LOGIN }>here</Link>.
                         </small>
                     </div>
                 </div>
@@ -151,4 +178,4 @@ const Login = () => {
     );
 };
  
-export default Login;
+export default Register;

@@ -2,18 +2,27 @@ import React from 'react';
 
 import { findMines, openNeighbours } from '../../helpers/functions';
 import colors from '../../constants/colors';
+import Swal from 'sweetalert2';
+import en from '../../lang/en';
 
-const Cell = ({cell, board, setBoard, showAll, setShowAll}) => {
+const Cell = ({cell, board, setBoard, showAll, setShowAll, stopClock, setStopClock}) => {
     //Handle the click
     const handleShow = e => {
         e.preventDefault();
         //Check for open and flag
-        if(cell.isOpen || cell.hasFlag){
+        if(cell.isOpen || cell.hasFlag || showAll){
             return;
         }
         //Check for mines
         if(cell.hasMine){
-            alert('Perdiste');
+            Swal.fire(
+                en.SORRY,
+                'You lost the game!',
+                'error'
+            )
+            //Stop the clock
+            setStopClock(true);
+            //Show all
             setShowAll(true);
             return;
         }
@@ -23,6 +32,10 @@ const Cell = ({cell, board, setBoard, showAll, setShowAll}) => {
         newBoard.cells[cell.x][cell.y].isOpen = true;
         newBoard.cells[cell.x][cell.y].count = findMines(cell, board);
         newBoard.opened++;
+        //Start the clock
+        if(stopClock){
+            setStopClock(false);
+        }
         //Check te count
         if(newBoard.cells[cell.x][cell.y].count === 0){
             //Must open neighbours
