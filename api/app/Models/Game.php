@@ -20,9 +20,10 @@ class Game extends Model
         'rows',
         'cols',
         'mines',
-        'last_update',
+        'flagsRemain',
         'board',
-        'timetracking'
+        'clock',
+        'last_update'
     ];
 
     /**
