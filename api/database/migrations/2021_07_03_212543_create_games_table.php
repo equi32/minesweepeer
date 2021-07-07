@@ -21,6 +21,7 @@ class CreateGamesTable extends Migration
             $table->integer('cols')->default(1);
             $table->integer('mines')->default(1);
             $table->integer('flagsRemain')->default(1);
+            $table->integer('opened')->default(0);
             $table->integer('clock')->default(0);
             $table->text('board');
             $table->timestamp('last_update')->nullable();

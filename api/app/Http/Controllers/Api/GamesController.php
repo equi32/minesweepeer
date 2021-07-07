@@ -46,6 +46,9 @@ class GamesController extends ApiController
             'cols' => 'required|numeric',
             'mines' => 'required|numeric',
             'board' => 'required',
+            'timetracking' => 'required|numeric',
+            'flagsRemain' => 'required|numeric',
+            'opened' => 'required|numeric'
         ]);
         //Verification
         if($validator->fails())
@@ -59,6 +62,9 @@ class GamesController extends ApiController
             'cols' => $request->cols,
             'mines' => $request->mines,
             'board' => $request->board,
+            'flagsRemain' => $request->flagsRemain,
+            'opened' => $request->opened,
+            'clock' => $request->timetracking,
             'user_id' => auth()->user()->id
         ]);
         //Generate data
@@ -112,7 +118,9 @@ class GamesController extends ApiController
         //Validation
         $validator = Validator::make($request->all(), [
             'board' => 'required',
-            'timetracking' => 'required|numeric'
+            'timetracking' => 'required|numeric',
+            'flagsRemain' => 'required|numeric',
+            'opened' => 'required|numeric'
         ]);
         //Verification
         if($validator->fails())
@@ -122,8 +130,10 @@ class GamesController extends ApiController
         }
         //Update object
         $game->update([
+            'flagsRemain' => $request->flagsRemain,
+            'opened' => $request->opened,
             'board' => $request->board,
-            'timetracking' => $request->timetracking,
+            'clock' => $request->timetracking,
             'last_update' => date('Y-m-d H:i:s')
         ]);
         //Generate data

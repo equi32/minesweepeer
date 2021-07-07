@@ -23,6 +23,7 @@ class Game extends Model
         'flagsRemain',
         'board',
         'clock',
+        'opened',
         'last_update'
     ];
 

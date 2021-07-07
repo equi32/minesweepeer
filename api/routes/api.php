@@ -24,6 +24,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 //Login
 Route::post('login', [AuthController::class, 'authenticate']);
+Route::post('register', [AuthController::class, 'register']);
 
 //Datos de usuario
 Route::middleware('auth:sanctum')->get('user', [AuthController::class, 'user']);
