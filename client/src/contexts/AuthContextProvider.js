@@ -1,23 +1,24 @@
 import React, { useEffect, useReducer } from 'react';
+import { RESET_PROFILE, SET_PROFILE } from '../types';
 
 export const AuthContext = React.createContext();
 
 const initialState = {
     name: '',
-    profileImage: '',
+    email: '',
     isAuth: false,
   };
   
   const reducer = (state, action) => {
     switch (action.type) {
-      case 'setProfile':
+      case SET_PROFILE:
         return {
           ...state,
           name: action.value.name,
-          profileImage: action.value.profileImage,
+          email: action.value.email,
           isAuth: false,
         };
-      case 'resetProfile':
+      case RESET_PROFILE:
         sessionStorage.removeItem('profile');
         return initialState;
       default:

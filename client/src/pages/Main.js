@@ -1,138 +1,73 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Layout from './Layout';
 
 import en from '../lang/en';
 import routes from '../constants/routes';
-import HeaderButton from '../components/Common/HeaderButton';
 
-import { GameContext } from '../contexts/GameContextProvider';
-import { NEW_GAME } from '../types';
-
-const initialGame = {
-    rows: '',
-    cols: '',
-    mines: ''
-}
-
-const maxParams = {
-    rows: 100,
-    cols: 100
-}
+import { AuthContext } from '../contexts/AuthContextProvider';
+import { RESET_PROFILE } from '../types';
+import { removeJwtToken } from '../helpers/authHelper';
 
 const Main = () => {
     //History
     const history = useHistory();
     //Context
-    const { handleGame } = useContext(GameContext);
-    //Local state
-    const [ game, setGame ] = useState(initialGame)
-    //Form changes
-    const handleChange = e => {
-        setGame({
-            ...game,
-            [e.target.name]: e.target.value
-        })
-    }
-    //Form submit
-    const handleSubmit = e => {
-        e.preventDefault();
-        //Validate
-        if(isNaN(parseInt(game.rows)) || game.rows > maxParams.rows){
-            alert('error row');
-            return;
-        }
-        if(isNaN(game.cols) || game.cols > maxParams.cols){
-            alert('error cols');
-            return;
-        }
-        if(isNaN(game.mines) || game.mines > (game.rows * game.cols)){
-            alert('error mines');
-            return;
-        }
-        //Set the data
-        handleGame({
-            type: NEW_GAME,
-            payload: {
-                rows: parseInt(game.rows),
-                cols: parseInt(game.cols),
-                mines: parseInt(game.mines)
-            }
-        });
-        //Redirect to game
-        history.push(routes.PLAY);
+    const { profile, handleProfile } = useContext(AuthContext);
+    //Handle logout
+    const handleLogout = () => {
+        removeJwtToken();
+        handleProfile({ type: RESET_PROFILE });
+        history.push(routes.LOGIN);
     }
     //Render
     return (
-        <Layout>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                <h2 className="text-center text-3xl font-extrabold text-gray-900">
-                    { en.START_GAME }
-                </h2>
-                </div>
-                <div className="text-right">
-                    <HeaderButton to={ routes.LOGIN } className="">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
-                    </HeaderButton>
+        <Layout halfWidth>
+            <div className="mt-6">
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="text-left">
+                        <h2 className="text-3xl font-extrabold text-gray-900">
+                            { `${en.WELCOME} ${profile.name}` }
+                        </h2>
+                        Select one option to begin
+                    </div>
+                    <div className="text-right">
+                        <button 
+                            type="button"
+                            className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            onClick={handleLogout}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                <div className="rounded-md shadow-sm -space-y-px">
-                    <div>
-                        <label htmlFor="rows-number" className="sr-only">Rows</label>
-                        <input 
-                            name="rows" 
-                            type="number" 
-                            autoComplete="off" 
-                            required 
-                            className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" 
-                            placeholder={ en.PLACEHOLDER.ROWS }
-                            autoFocus
-                            onChange={handleChange}
-                            value={game.rows}
-                        />
+            <div className="mt-8 space-y-6 flex content-center justify-center">
+                <div className="w-1/2">
+                    <div className="mb-2">
+                        <Link to={routes.NEW_GAME} className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                            </span>
+                            { en.NEW_GAME.toUpperCase() }
+                        </Link>
                     </div>
-                    <div>
-                        <label htmlFor="cols-number" className="sr-only">Columns</label>
-                        <input 
-                            name="cols" 
-                            type="number" 
-                            autoComplete="off" 
-                            required 
-                            className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" 
-                            placeholder={ en.PLACEHOLDER.COLS } 
-                            onChange={handleChange}
-                            value={game.cols}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="mines-number" className="sr-only">Mines</label>
-                        <input 
-                            name="mines" 
-                            type="number" 
-                            autoComplete="off" 
-                            required 
-                            className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" 
-                            placeholder={ en.PLACEHOLDER.MINES }
-                            onChange={handleChange}
-                            value={game.mines}
-                        />
+                    <div className="mb-2">
+                        <Link to={routes.LOAD_GAME} className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                </svg>
+                            </span>
+                            { en.LOAD_GAME.toUpperCase() }
+                        </Link>
                     </div>
                 </div>
-                <div>
-                    <button type="submit" className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                            </svg>
-                        </span>
-                        { en.START_GAME }
-                    </button>
-                </div>
-            </form>
+            </div>
         </Layout>
     );
 }

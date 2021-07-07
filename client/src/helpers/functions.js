@@ -46,6 +46,7 @@ export const createBoard = (rows, cols, mines) => {
         cols,
         mines,
         flagsRemain: mines,
+        opened: 0,
         cells: board
     };
 }
@@ -83,7 +84,8 @@ export const openNeighbours = (cell, board) => {
     const totalCols = board.cols;
     //Initialize
     // let minesCount = 0;
-    let newCells = board.cells;
+    let newBoard = {...board};
+    // let newCells = board.cells;
     let neighbours = [];
     //Look mines around the cell, first around de rows
     for(let row = -1; row <= 1; row++){
@@ -97,30 +99,28 @@ export const openNeighbours = (cell, board) => {
                 //Check borders
                 if(x < totalRows && x >= 0 && y < totalCols && y >= 0){
                     //Check if has Mine/isOpen
-                    if(!newCells[x][y].hasMine && !newCells[x][y].isOpen){
+                    if(!newBoard.cells[x][y].hasMine && !newBoard.cells[x][y].isOpen){
                         //Open
-                        newCells[x][y].isOpen = true;
+                        newBoard.cells[x][y].isOpen = true;
+                        newBoard.opened++;
                         //Count mines
-                        const minesCount = findMines(newCells[x][y],board);
-                        newCells[x][y].count = minesCount;
+                        const minesCount = findMines(newBoard.cells[x][y],board);
+                        newBoard.cells[x][y].count = minesCount;
                         // //Check
                         if(minesCount === 0){
-                            neighbours.push(newCells[x][y]);
+                            neighbours.push(newBoard.cells[x][y]);
                         }
                     }
                 }
             }
         }
     }
-    console.log(neighbours);
     //Verify the rest
     neighbours.forEach(v => {
-        newCells = openNeighbours(v, {
-            ...board,
-            cells: newCells
-        })
+        //Call again
+        newBoard = openNeighbours(v, newBoard);
     })
     //Return
-    return newCells;
+    return newBoard;
 }
 
