@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Layout = props => (
     <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
@@ -11,5 +12,9 @@ const Layout = props => (
         </div>
     </div>
 );
+
+Layout.propTypes = {
+    children: PropTypes.node,
+}
  
 export default Layout;

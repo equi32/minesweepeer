@@ -4,6 +4,7 @@ import { findMines, openNeighbours } from '../../helpers/functions';
 import colors from '../../constants/colors';
 import Swal from 'sweetalert2';
 import en from '../../lang/en';
+import PropTypes from 'prop-types'
 
 const Cell = ({cell, board, setBoard, showAll, setShowAll, stopClock, setStopClock}) => {
     //Handle the click
@@ -98,5 +99,15 @@ const Cell = ({cell, board, setBoard, showAll, setShowAll, stopClock, setStopClo
         </button>
     );
 };
+
+Cell.propTypes = {
+    cell: PropTypes.object.isRequired,
+    board: PropTypes.object.isRequired,
+    setBoard: PropTypes.func.isRequired,
+    showAll: PropTypes.bool.isRequired,
+    setShowAll: PropTypes.func.isRequired,
+    stopClock: PropTypes.bool.isRequired,
+    setStopClock: PropTypes.func.isRequired
+}
  
 export default Cell;
