@@ -37,7 +37,7 @@ Your app is ready to be deployed!
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 
-# Backend - API rest
+# Backend - API REST
 This project was developed with PHP v7.4.9 and Laravel v8, created with Composer [composer create-project laravel/laravel api](https://laravel.com/docs/8.x)
 
 ## Available Scripts
@@ -46,6 +46,18 @@ In the project directory, you can run:
 ### `composer install`
 For install all the dependencies and plugins used in the project
 
+### `php artisan migrate`
+For create tables and data base structure (The database must be created first)
+
+### `php artisan db:seed`
+For popuplate users database
+
 ### `php artisan serve`
 Runs the app in the development mode.\
 Open [http://localhost:8080](http://localhost:8080) to view it in the browser.
+
+
+## Live demo
+Open [https://minesweeper.developia.com.ar](https://minesweeper.developia.com.ar) for online demo.
+User: admin@admin.com
+Password: admin
