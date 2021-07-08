@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 import Layout from '../Layout';
 import Cell from './Cell';
@@ -152,35 +152,45 @@ const Board = () => {
                 </h2>
                 </div>
                 <div className="text-right">
-                    <HeaderButton to={ routes.HOME }>
+                    <Link
+                        data-cy="play-home"
+                        to={ routes.HOME } 
+                        className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                         </svg>
-                    </HeaderButton>
+                    </Link>
                 </div>
             </div>
             <div className="grid grid-cols-2 gap-4 mb-2 mt-2">
                 <div className="text-left">
-                    <h2 className="text-3xl font-extrabold text-gray-900">
+                    <h2 data-cy="play-title" className="text-3xl font-extrabold text-gray-900">
                         Let´s play { profile.name }
                     </h2>
                 </div>
                 
                 <div className="text-right">
-                    <div className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <div 
+                        data-cy="play-flags"
+                        className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
                         </svg>
                         { board ? board.flagsRemain : '-' }
                     </div>
-                    <div className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <div 
+                        data-cy="play-clock"
+                        className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         { clock < 10 && clock < 100 ? `00${clock}` : clock < 100 ? `0${clock}` : clock }
                     </div>
                     <button 
+                        data-cy="play-save"
                         type="button" 
                         className="ml-3 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-white bg-indigo-800 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         onClick={handleSave}
@@ -191,6 +201,7 @@ const Board = () => {
                         { en.SAVE.toUpperCase() }
                     </button>
                     <button 
+                        data-cy="play-restart"
                         type="button" 
                         className="ml-3 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-white bg-pink-600 hover:bg-pink-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         onClick={handleRestart}
@@ -214,7 +225,7 @@ const Board = () => {
             }
             {
                 board ? (
-                    <div className={`grid flex justify-center`}>
+                    <div className={`grid flex justify-center`} data-cy="play-cells">
                         {
                             board.cells.map((row, index) => (
                                 <div key={`row-${index}`} className="w-100" style={{ height: `calc(100% / ${ board.rows}`}}>

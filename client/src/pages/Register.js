@@ -95,16 +95,22 @@ const Register = () => {
     return (
         <Layout halfWidth>
             <div>
-                <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                <h2 data-cy="register-title" className="mt-6 text-center text-3xl font-extrabold text-gray-900">
                     { en.REGISTER_TITLE }
                 </h2>
             </div>
-            <form className="mt-8 space-y-6 flex content-center justify-center" onSubmit={handleSubmit} autoComplete="off">
+            <form 
+                className="mt-8 space-y-6 flex content-center justify-center" 
+                onSubmit={handleSubmit} 
+                autoComplete="off"
+                data-cy="register-form"
+            >
                 <div className="w-1/2">
                     <div className="rounded-md shadow-sm -space-y-px mb-2">
                         <div>
                             <label htmlFor="name" className="sr-only">Name</label>
-                            <input 
+                            <input
+                                data-cy="register-name" 
                                 id="name" 
                                 name="name" 
                                 type="text" 
@@ -118,7 +124,8 @@ const Register = () => {
                         </div>
                         <div>
                             <label htmlFor="email-address" className="sr-only">Email address</label>
-                            <input 
+                            <input
+                                data-cy="register-email" 
                                 id="email-address" 
                                 name="email" 
                                 type="email" 
@@ -133,7 +140,8 @@ const Register = () => {
                         </div>
                         <div>
                             <label htmlFor="password" className="sr-only">Password</label>
-                            <input 
+                            <input
+                                data-cy="register-password" 
                                 id="password" 
                                 name="password" 
                                 type="password" 
@@ -146,7 +154,8 @@ const Register = () => {
                         </div>
                         <div>
                             <label htmlFor="password" className="sr-only">Password</label>
-                            <input 
+                            <input
+                                data-cy="register-password-confirmation" 
                                 id="password_confirmation" 
                                 name="password_confirmation" 
                                 type="password" 
@@ -159,7 +168,11 @@ const Register = () => {
                         </div>
                     </div>
                     <div className="mb-5">
-                        <button type="submit" className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <button 
+                            data-cy="register-submit"
+                            type="submit" 
+                            className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >
                             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                                 <svg className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                 <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
@@ -169,7 +182,7 @@ const Register = () => {
                         </button>
                         <small className="mt-2">
                             Already registered?,&nbsp;
-                            Go to login <Link className="text-blue-800 font-medium" to={ routes.LOGIN }>here</Link>.
+                            Go to login <Link data-cy="register-login-link" className="text-blue-800 font-medium" to={ routes.LOGIN }>here</Link>.
                         </small>
                     </div>
                 </div>
