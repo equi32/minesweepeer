@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Layout from './Layout';
+import GameTitle from '../components/Common/GameTitle';
 
 import en from '../lang/en';
 import routes from '../constants/routes';
-import HeaderButton from '../components/Common/HeaderButton';
 
 import { GameContext } from '../contexts/GameContextProvider';
 import { AuthContext } from '../contexts/AuthContextProvider';
@@ -67,10 +67,13 @@ const NewGame = () => {
     //Render
     return (
         <Layout halfWidth>
+            <div>
+                <GameTitle />
+            </div>
             <div className="mt-6">
                 <div className="grid grid-cols-2 gap-4">
                     <div className="text-left">
-                        <h2 data-cy="new-title" className="text-3xl font-extrabold text-gray-900">
+                        <h2 data-cy="new-title" className="text-2xl font-extrabold text-gray-900">
                             { `${en.WELCOME} ${profile.name}` }
                         </h2>
                         Configure your game

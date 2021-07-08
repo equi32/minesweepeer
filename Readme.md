@@ -3,7 +3,7 @@ This project is composed of an API developed in PHP with Laravel and a client or
 It consists of a version of the classic game "Minesweeper"
 
 
-#Frontend - Client
+# Frontend - Client
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
@@ -37,7 +37,7 @@ Your app is ready to be deployed!
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 
-#Backend - API rest
+# Backend - API rest
 This project was developed with PHP v7.4.9 and Laravel v8, created with Composer [composer create-project laravel/laravel api](https://laravel.com/docs/8.x)
 
 ## Available Scripts

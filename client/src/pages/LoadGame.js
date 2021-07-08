@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from './Layout';
+import GameTitle from '../components/Common/GameTitle';
 
 import en from '../lang/en';
 import routes from '../constants/routes';
-import HeaderButton from '../components/Common/HeaderButton';
 
 import { GameContext } from '../contexts/GameContextProvider';
 import { AuthContext } from '../contexts/AuthContextProvider';
@@ -28,10 +28,13 @@ const LoadGame = () => {
     //Render
     return (
         <Layout halfWidth>
+            <div>
+                <GameTitle />
+            </div>
             <div className="mt-6">
                 <div className="grid grid-cols-2 gap-4">
                     <div className="text-left">
-                        <h2 data-cy="load-title" className="text-3xl font-extrabold text-gray-900">
+                        <h2 data-cy="load-title" className="text-2xl font-extrabold text-gray-900">
                             { `${en.WELCOME} ${profile.name}` }
                         </h2>
                         Select the game to load

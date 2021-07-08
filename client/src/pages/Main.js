@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Layout from './Layout';
+import GameTitle from '../components/Common/GameTitle';
 
 import en from '../lang/en';
 import routes from '../constants/routes';
@@ -23,10 +24,13 @@ const Main = () => {
     //Render
     return (
         <Layout halfWidth>
+            <div>
+                <GameTitle />
+            </div>
             <div className="mt-6">
                 <div className="grid grid-cols-2 gap-4">
                     <div className="text-left">
-                        <h2 data-cy="main-title" className="text-3xl font-extrabold text-gray-900">
+                        <h2 data-cy="main-title" className="text-2xl font-extrabold text-gray-900">
                             { `${en.WELCOME} ${profile.name}` }
                         </h2>
                         Select one option to begin

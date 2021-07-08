@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { StatusCodes } from 'http-status-codes';
 
 import Layout from './Layout';
+import GameTitle from '../components/Common/GameTitle';
 
 import { AuthContext } from '../contexts/AuthContextProvider';
 
@@ -94,7 +95,8 @@ const Login = () => {
     return (
         <Layout halfWidth>
             <div>
-                <h2 data-cy="login-title" className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                <GameTitle />
+                <h2 data-cy="login-title" className="mt-6 text-center text-2xl font-extrabold text-gray-900">
                     { en.SIGN_IN_TITLE }
                 </h2>
             </div>
